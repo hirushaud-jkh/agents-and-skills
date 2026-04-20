@@ -1,0 +1,10 @@
+# VS Code MCP config — may contain tokens if PAT is hardcoded instead of using ${input:}
+# The committed version uses ${input:} so no token is stored, but gitignore as a safety net.
+# Use .vscode/mcp.json as the source of truth for this repo's MCP servers.
+.vscode/settings.json
+.vscode/*.local.json
+
+# Environment files
+.env
+.env.*
+!.env.example

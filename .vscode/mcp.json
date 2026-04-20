@@ -1,0 +1,22 @@
+{
+  "inputs": [
+    {
+      "id": "azure-devops-pat",
+      "type": "promptString",
+      "description": "Azure DevOps Personal Access Token (needs: Work Items Read & Write, Project & Team Read)",
+      "password": true
+    }
+  ],
+  "servers": {
+    "azure-devops": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@microsoft/azure-devops-mcp"],
+      "env": {
+        "AZURE_DEVOPS_ORG_URL": "https://dev.azure.com/JKGroupAA",
+        "AZURE_DEVOPS_AUTH_TYPE": "pat",
+        "AZURE_DEVOPS_TOKEN": "${input:azure-devops-pat}"
+      }
+    }
+  }
+}
