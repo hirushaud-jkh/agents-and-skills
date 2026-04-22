@@ -7,8 +7,7 @@ Centralized repository for reusable AI agents and skills. Designed to work acros
 - `core/` — Platform-agnostic behavioral instructions (the source of truth for agent logic)
 - `.claude/agents/` — Claude Code agent wrappers (also read by Copilot)
 - `.github/agents/` — Copilot-enhanced agent wrappers (handoffs, model fallback arrays, `#tool:` refs)
-- `.claude/skills/` — Shared skills (both platforms discover this path)
-- `.github/skills/` — Copilot-only skills (if needed)
+- `.claude/skills/` — Shared skills (both Copilot and Claude Code discover this path)
 - `.vscode/mcp.json` — MCP server config for VS Code / Copilot
 - `.mcp.json` — MCP server config for Claude Code
 
