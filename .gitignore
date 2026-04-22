@@ -12,3 +12,7 @@
 
 # Node
 node_modules/
+
+# Skill assets — user-provided, not committed
+.claude/skills/deck/templates/*.pptx
+.github/skills/*/templates/*.pptx
