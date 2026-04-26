@@ -1,0 +1,8 @@
+{
+  "name": "base-tools",
+  "description": "Shared JKH Group skills — deck generation, presentations, and common utilities used by all teams",
+  "author": {
+    "name": "JKH Group DevTools"
+  },
+  "keywords": ["shared", "deck", "presentations", "common"]
+}

@@ -13,34 +13,40 @@ Generate and edit PowerPoint (.pptx) decks using OCTAVE company branding templat
 ## Skill Directory
 
 All paths below are relative to this skill's directory.
-- **Claude Code:** resolve via `${CLAUDE_SKILL_DIR}` or the absolute path to this `SKILL.md`'s parent.
-- **Copilot (VS Code):** resolve relative to this file's location in the workspace.
+- **Plugin mode (recommended):** `${CLAUDE_PLUGIN_ROOT}/skills/deck/` — works on both Claude Code and VS Code when installed as a plugin.
+- **Standalone mode:** resolve relative to this file's location in the workspace.
 
 Determine the skill directory at the start of every generation script:
 ```python
 import os
-# Works on both platforms — set SKILL_DIR to the directory containing this SKILL.md
-SKILL_DIR = os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() else os.path.expanduser("~/.claude/skills/deck")
-# Override: if running from the repo, use the repo path
-for candidate in [
-    os.path.join(os.getcwd(), ".claude", "skills", "deck"),
-    os.path.expanduser("~/.claude/skills/deck"),
-]:
-    if os.path.isfile(os.path.join(candidate, "recipes.py")):
-        SKILL_DIR = candidate
-        break
+
+# Plugin mode: CLAUDE_PLUGIN_ROOT is set automatically when installed as a plugin
+SKILL_DIR = os.environ.get("CLAUDE_PLUGIN_ROOT", "")
+if SKILL_DIR:
+    SKILL_DIR = os.path.join(SKILL_DIR, "skills", "deck")
+
+# Fallback: find skill dir by scanning common locations
+if not SKILL_DIR or not os.path.isfile(os.path.join(SKILL_DIR, "recipes.py")):
+    for candidate in [
+        os.path.join(os.getcwd(), "plugins", "base-tools", "skills", "deck"),
+        os.path.join(os.getcwd(), ".claude", "skills", "deck"),
+        os.path.expanduser("~/.claude/skills/deck"),
+    ]:
+        if os.path.isfile(os.path.join(candidate, "recipes.py")):
+            SKILL_DIR = candidate
+            break
 ```
 
 ## Commands
 
 | Usage | What it does |
 |-------|-------------|
-| `/deck` | Generate new deck from current conversation context |
-| `/deck "topic or instructions"` | Generate a deck on a specific topic |
-| `/deck edit <path> "instructions"` | Edit specific slides in an existing deck |
-| `/deck add <path> "instructions"` | Add new slides to an existing deck |
-| `/deck refer <path>` | Read existing deck into context |
-| `/deck refer <path> "create a new deck based on this"` | Reference one deck to create another |
+| `/base-tools:deck` | Generate new deck from current conversation context |
+| `/base-tools:deck "topic or instructions"` | Generate a deck on a specific topic |
+| `/base-tools:deck edit <path> "instructions"` | Edit specific slides in an existing deck |
+| `/base-tools:deck add <path> "instructions"` | Add new slides to an existing deck |
+| `/base-tools:deck refer <path>` | Read existing deck into context |
+| `/base-tools:deck refer <path> "create a new deck based on this"` | Reference one deck to create another |
 
 For Windows paths, auto-convert: `C:\Users\...` → `/mnt/c/Users/...` (WSL only).
 
@@ -66,7 +72,7 @@ for i, t in enumerate(templates, 1):
 
 Ask the user which template to use (skip if only one exists or already specified).
 
-> **Setup:** Copy your company `.pptx` templates into `.claude/skills/deck/templates/`. The skill auto-detects any `.pptx` files placed there.
+> **Setup:** Copy your company `.pptx` templates into the `templates/` directory alongside this skill. The skill auto-detects any `.pptx` files placed there.
 
 ### Template Spec Guidelines
 

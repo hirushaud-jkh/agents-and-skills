@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "extraKnownMarketplaces": {
+    "jkh-tools": {
+      "source": {
+        "source": "github",
+        "repo": "hirushaud-jkh/agents-and-skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "base-tools@jkh-tools": true,
+    "devops-team@jkh-tools": true
+  }
+}

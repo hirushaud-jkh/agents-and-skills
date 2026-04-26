@@ -1,0 +1,27 @@
+{
+  "name": "jkh-tools",
+  "owner": {
+    "name": "JKH Group DevTools",
+    "email": "devtools@jkgroup.com"
+  },
+  "metadata": {
+    "description": "JKH Group AI productivity tools — shared skills, agents, and integrations for all teams",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "base-tools",
+      "source": "./plugins/base-tools",
+      "description": "Shared skills for all JKH teams (deck generation, code review, common utilities)",
+      "category": "productivity",
+      "keywords": ["shared", "deck", "presentations", "common"]
+    },
+    {
+      "name": "devops-team",
+      "source": "./plugins/devops-team",
+      "description": "DevOps team tools — Azure DevOps time tracking, sprint management, work item automation",
+      "category": "productivity",
+      "keywords": ["devops", "time-tracking", "azure-devops", "sprint"]
+    }
+  ]
+}

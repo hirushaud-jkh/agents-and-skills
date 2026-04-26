@@ -1,0 +1,18 @@
+{
+  "name": "devops-team",
+  "description": "DevOps team tools — Azure DevOps time tracking, sprint management, work item automation",
+  "author": {
+    "name": "JKH Group DevTools"
+  },
+  "keywords": ["devops", "time-tracking", "azure-devops", "sprint"],
+  "dependencies": ["base-tools"],
+  "userConfig": {
+    "azure_pat": {
+      "type": "string",
+      "title": "Azure DevOps Personal Access Token",
+      "description": "PAT for JKGroupAA org (needs: Work Items Read & Write, Project & Team Read)",
+      "sensitive": true,
+      "required": true
+    }
+  }
+}

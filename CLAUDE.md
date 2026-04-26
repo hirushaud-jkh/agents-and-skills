@@ -1,25 +1,61 @@
 # Project: agents-and-skills
 
-Centralized repository for reusable AI agents and skills. Designed to work across both GitHub Copilot (VS Code) and Claude Code.
+Plugin marketplace for JKH Group AI productivity tools. Cross-platform — works on GitHub Copilot (VS Code), Claude Code, Claude Desktop (MCP only), and Copilot CLI. Private repo — org members only.
+
+## Architecture
+
+This repo is a **plugin marketplace** — a catalog of installable plugins distributed via the `.claude-plugin/` format (shared between VS Code, Copilot CLI, and Claude Code).
 
 ## Repo Structure
 
-- `core/` — Platform-agnostic behavioral instructions (the source of truth for agent logic)
-- `.claude/agents/` — Claude Code agent wrappers (also read by Copilot)
-- `.github/agents/` — Copilot-enhanced agent wrappers (handoffs, model fallback arrays, `#tool:` refs)
-- `.claude/skills/` — Shared skills (both Copilot and Claude Code discover this path)
-- `.vscode/mcp.json` — MCP server config for VS Code / Copilot
-- `.mcp.json` — MCP server config for Claude Code
+```
+.claude-plugin/marketplace.json    ← Marketplace catalog (lists all plugins)
+plugins/
+  base-tools/                      ← Shared plugin — skills used by all teams
+    .claude-plugin/plugin.json
+    skills/deck/                   ← PowerPoint generation (OCTAVE branding)
+  devops-team/                     ← DevOps team — Azure DevOps integration
+    .claude-plugin/plugin.json
+    agents/time-logger.md          ← Time tracking agent
+    .mcp.json                      ← Azure DevOps MCP server
+```
+
+## How to Install
+
+**VS Code Copilot (GUI):**
+1. Add to VS Code `settings.json`: `"chat.plugins.marketplaces": ["hirushaud-jkh/agents-and-skills"]`
+2. Extensions sidebar → `@agentPlugins` → Install plugins
+3. Requires `chat.plugins.enabled: true` (org-level setting)
+
+**Claude Code (CLI):**
+```bash
+claude plugin marketplace add hirushaud-jkh/agents-and-skills
+claude plugin install devops-team@jkh-tools
+```
+
+**Claude Desktop:** Add MCP server manually to `claude_desktop_config.json` (agents/skills not supported, MCP tools only).
+
+**Project auto-setup:** Add to any project's `.claude/settings.json`:
+```json
+{
+  "extraKnownMarketplaces": {
+    "jkh-tools": {
+      "source": { "source": "github", "repo": "hirushaud-jkh/agents-and-skills" }
+    }
+  },
+  "enabledPlugins": { "devops-team@jkh-tools": true }
+}
+```
 
 ## Conventions
 
-- When editing agent behavior, edit the core prompt in `core/<agent>/prompt.md` — not the wrappers.
-- Wrappers only contain frontmatter (tools, model, platform features) and a link to the core prompt.
-- Tool names differ between platforms. The mapping table in each wrapper resolves this.
-- MCP servers are configured in two files pointing to the same server — keep them in sync.
+- Each plugin is self-contained under `plugins/<name>/` — no cross-references between plugins.
+- Agent prompts live directly in the plugin's `agents/` directory (not in a separate `core/` folder).
+- MCP servers are configured per-plugin in `.mcp.json` at the plugin root.
+- No `version` field in `plugin.json` — every git commit is a new version (SHA-based). Switch to semver for stable releases.
 
 ## Azure DevOps
 
 - Organization: `JKGroupAA` (`https://dev.azure.com/JKGroupAA`)
 - MCP package: `@azure-devops/mcp`
-- Auth: Personal Access Token via environment variable `AZURE_DEVOPS_EXT_PAT`
+- Auth: PAT prompted at plugin install (Claude Code) or via `AZURE_DEVOPS_EXT_PAT` env var (VS Code)
